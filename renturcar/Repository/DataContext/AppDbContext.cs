@@ -12,8 +12,12 @@ namespace Repository.DataContext
        public AppDbContext(DbContextOptions<AppDbContext> options)
           : base(options)
         {
-
+            
+            
         }
+            public DbSet<User> AppUsers { get; set; }
+            public DbSet<CarRent> RentCars { get; set; }
+            public DbSet<Car> Cars { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

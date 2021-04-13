@@ -28,12 +28,14 @@ namespace renturcar
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AppDbContext>(x =>
-                                x.UseSqlServer(Configuration.GetConnectionString("RentUrCar_Db")));
+            services.AddDbContext<AppDbContext>(options =>
+                                options.UseSqlServer(Configuration.GetConnectionString("RentUrCar_Db"),
+                                optionsBuilder => optionsBuilder.MigrationsAssembly(nameof(renturcar)
+                                )));
 
             services.AddControllersWithViews().AddNewtonsoftJson(opt =>
                     opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-          
+
             services.ServicesImplementations();
             services.IdentityConfigure();
 
@@ -65,7 +67,8 @@ namespace renturcar
                 builder.WithOrigins("http://").AllowAnyMethod().AllowAnyHeader();
             }));
 
-            services.AddSwaggerGen(x => {
+            services.AddSwaggerGen(x =>
+            {
                 x.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "RentUrCar Project",

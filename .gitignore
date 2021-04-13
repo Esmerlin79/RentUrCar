@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 renturcar/RepositoryModel/obj/Debug/netcoreapp3.1/RepositoryModel.csprojAssemblyReference.cache
 renturcar/Repository/obj/Repository.csproj.nuget.g.props
@@ -7,3 +8,39 @@ renturcar/Repository/obj/project.assets.json
 renturcar/Repository/obj/Debug/netcoreapp3.1/Repository.csprojAssemblyReference.cache
 renturcar/Repository/obj/Debug/netcoreapp3.1/Repository.assets.cache
 renturcar/.vs/renturcar/v16/.suo
+=======
+# From .NET Core 3.0 you can use the command: `dotnet new gitignore` to generate a customizable .gitignore file
+
+*.swp
+*.*~
+project.lock.json
+.DS_Store
+*.pyc
+
+# Visual Studio Code
+.vscode
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+msbuild.log
+msbuild.err
+msbuild.wrn
+
+# Visual Studio 2015
+.vs/
+>>>>>>> a65a84f2a03b376886e5210b8bb9e55afa5decef
