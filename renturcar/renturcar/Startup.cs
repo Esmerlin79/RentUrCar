@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -27,15 +28,27 @@ namespace renturcar
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AppDbContext>(x =>
-                                x.UseSqlServer(Configuration.GetConnectionString("RentUrCar_Db")));
+            services.AddDbContext<AppDbContext>(options =>
+                                options.UseSqlServer(Configuration.GetConnectionString("RentUrCar_Db"),
+                                optionsBuilder => optionsBuilder.MigrationsAssembly(nameof(renturcar)
+                                )));
 
             services.AddControllersWithViews().AddNewtonsoftJson(opt =>
                     opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-          
+
             services.ServicesImplementations();
             services.IdentityConfigure();
 
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 1;
+                options.User.RequireUniqueEmail = true;
+            });
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Token secret word"));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
@@ -54,7 +67,8 @@ namespace renturcar
                 builder.WithOrigins("http://").AllowAnyMethod().AllowAnyHeader();
             }));
 
-            services.AddSwaggerGen(x => {
+            services.AddSwaggerGen(x =>
+            {
                 x.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "RentUrCar Project",
