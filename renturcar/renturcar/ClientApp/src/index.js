@@ -4,18 +4,14 @@ import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import registerServiceWorker from "./registerServiceWorker";
-import {setupAxios} from "./setupAxios";
+import { AppRouter } from "./routes/AppRouter";
+import { setupAxios } from "./setupAxios";
 
 const baseUrl = document.getElementsByTagName("base")[0].getAttribute("href");
 const rootElement = document.getElementById("root");
 
 setupAxios();
 
-ReactDOM.render(
-    <BrowserRouter basename={baseUrl}>
-        <App />
-    </BrowserRouter>,
-    rootElement
-);
+ReactDOM.render(<AppRouter />, rootElement);
 
 registerServiceWorker();
