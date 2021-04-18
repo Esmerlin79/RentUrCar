@@ -22,6 +22,13 @@ namespace renturcar.Controllers
         {
             _user = user;
         }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            var result = await _user.Login(model);
+            return Ok(result);
+        }
         [HttpPost("[action]")]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
