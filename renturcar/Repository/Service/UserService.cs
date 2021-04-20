@@ -28,9 +28,48 @@ namespace Repository.Service
           //  _userSession = userSession;
         }
 
-        public Task<ServiceResult> Login(LoginViewModel model)
+        public async Task<ServiceResult> Login(LoginViewModel model)
         {
-            throw new NotImplementedException();
+            ServiceResult response = new ServiceResult();
+            response.Successfull = false;
+
+            var user = await _userManager.FindByNameAsync(model.UserName);
+            if (user == null)
+            {
+                response.Successfull = false;
+                response.Messages.Add("El usuario No existe");
+                return response;
+            }
+            var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
+            if (!result.Succeeded)
+            {
+                response.Successfull = false;
+                response.Messages.Add("El password es invalido vuelva a intentarlo");
+                return response;
+            }
+            try
+            {
+                var userView = new UserViewModel
+                {
+                    name = user.name,
+                    lastName = user.lastName,
+                    Token = _jwtGenerate.CreateToken(user),
+                    Username = user.UserName,
+                    Email = user.Email
+                };
+
+                response.Successfull = true;
+                response.Messages.Add("Registro Exitoso");
+                response.Data = userView;
+
+            }
+            catch (Exception ex)
+            {
+                response.LogError(ex);
+            }
+
+
+            return response;
         }
 
         public async Task<ServiceResult> RegisterUser(RegisterViewModel model)
