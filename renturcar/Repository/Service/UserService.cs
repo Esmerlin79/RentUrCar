@@ -18,14 +18,14 @@ namespace Repository.Service
         private readonly SignInManager<User> _signInManager;
         private readonly IJwtGenerate _jwtGenerate;
         private readonly IUnitOfWork<AppDbContext> _context;
-        //private readonly IUserSession _userSession;
-        public UserService(UserManager<User> userManager, SignInManager<User> signInManager, IJwtGenerate jwtGenerate, IUnitOfWork<AppDbContext> context)
+        private readonly IUserSession _userSession;
+        public UserService(UserManager<User> userManager, SignInManager<User> signInManager, IJwtGenerate jwtGenerate, IUnitOfWork<AppDbContext> context, IUserSession userSession)
         {
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
             _jwtGenerate = jwtGenerate;
-          //  _userSession = userSession;
+            _userSession = userSession;
         }
 
         public async Task<ServiceResult> Login(LoginViewModel model)
@@ -65,6 +65,7 @@ namespace Repository.Service
             }
             catch (Exception ex)
             {
+                response.Successfull = false;
                 response.LogError(ex);
             }
 
@@ -135,9 +136,33 @@ namespace Repository.Service
             return response;
         }
 
-        public Task<ServiceResult> UserSesion()
+        public async Task<ServiceResult> UserSesion()
         {
-            throw new NotImplementedException();
+            var response = new ServiceResult();
+            response.Successfull = false;
+            try
+            {
+                var findUser = await _userManager.FindByNameAsync(_userSession.getUserSession());
+
+                var user = new UserViewModel
+                {
+                    name = findUser.name,
+                    lastName = findUser.lastName,
+                    Token = _jwtGenerate.CreateToken(findUser),
+                    Username = findUser.UserName,
+                    Email = findUser.Email
+                };
+                response.Successfull = true;
+                response.Data = user;
+                response.Messages.Add("Usuario Actual");
+            }
+            catch (Exception ex)
+            {
+                response.Successfull = false;
+                response.Messages.Add("Hubo un error al momento de buscar el usuario" + " " + ex);
+
+            }
+            return response;
         }
     }
 }
