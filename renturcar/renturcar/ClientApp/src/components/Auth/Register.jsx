@@ -1,12 +1,14 @@
 import React, {useState} from 'react'
 import {Loading} from '../Loading'
-import {Errors} from '../Errors'
+import {Message} from '../Message'
+import { useStateValue } from '../../context/store';
 // import {BrowserRouter as Router, Route} from 'react-router-dom'
 import {Link} from 'react-router-dom'
 import {postData} from '../../Services/Maintenance'
 
-export const Register = () => {
+export const Register = ({history}) => {
     // States
+    const [{ userSesion}, dispatch] = useStateValue();
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const [register, setRegister] = useState({
@@ -37,14 +39,27 @@ export const Register = () => {
         setLoading(true)
         
         setTimeout(() => {
-            postData('endpoint', register)
-            .then(data => {
-                console.log(data)
+            postData('Register', register)
+            .then((response) => {
+                if(response.data.successfull){
+                    dispatch({
+                        type:  "INICIAR_SESION",
+                        user: {
+                            userName: response.data.data.username,
+                        },
+                    })
+                    localStorage.setItem('token', response.data.data.token)
+                    history.push('/Dashboard')
+                    return
+                }
+                else{
+                    setLoading(false)
+                    setError("Connection Lost, try again")
+                } 
             })
-            .catch(err => {
+            .catch(() => {
                 setLoading(false)
-                setError("Se ha perdido la conexion con el Servidor")
-                console.log(err)
+                setError("Connection Lost, try reloading the page")
             })
         }, 3000);
     }
@@ -65,7 +80,10 @@ export const Register = () => {
                             <h3 className="mb-4">Welcome to RentUrCar!</h3>
                             <h5 className="mb-4">Register</h5>
                             {error ?
-                                <Errors error={error} /> 
+                                <Message 
+                                    message={error} 
+                                    alertType="danger"
+                                /> 
                             : null }
                             <form>
                             <div className="form-group">
@@ -134,7 +152,7 @@ export const Register = () => {
                                     : 
                                     (
                                         <div>
-                                            <p className="text-secondary">Already have an Account? <Link>Login</Link></p>
+                                            <p className="text-secondary">Already have an Account? <Link to="/Auth/Login">Login</Link></p>
                                             <button 
                                                 className="mt-4 btn btn btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" 
                                                 type="submit"

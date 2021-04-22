@@ -1,12 +1,14 @@
 import React, {useState} from 'react'
 import {postData} from '../../Services/Maintenance'
-import {Errors} from '../Errors'
+import {Message} from '../Message'
 import {Loading} from '../Loading'
+import { useStateValue } from '../../context/store';
 // import {BrowserRouter as Router, Route} from 'react-router-dom'
 import {Link} from 'react-router-dom'
 
 export const Login = ({history}) => {
     // States
+    const [{ userSesion}, dispatch] = useStateValue();
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const [login, setLogin] = useState({
@@ -21,30 +23,38 @@ export const Login = ({history}) => {
     }
     const {userName,pwd} = login;
 
-    const inpValidation = () => {
-        if (!userName || !pwd) return setError("Revise los Campos Vacios")
-        else return setError(null)
-    }
+    // ANCHOR POST DATA METHOD
 
     const onSubmit = (e) => {
         e.preventDefault()
-        inpValidation()
-
-        if(error) return;
+        if (!userName || !pwd) return setError("Revise los Campos Vacios")
+        
+        setError(null)
         setLoading(true)
         
         setTimeout(() => {
-            postData('endpoint', login)
-            .then(data => {
-               // history.push(Ruta Dashboard)
-                console.log(data)
-            })
-            .catch(err => {
+            // Send Data to API
+            postData('Login', login)
+            .then((response) => {
+                if(response.data.successfull){
+                    dispatch({
+                        type:  "INICIAR_SESION",
+                        payload: {
+                            userName: response.data.data.username,
+                        },
+                    })
+                    localStorage.setItem('token', response.data.data.token)
+                    history.push('/Dashboard')
+                    return
+                }
                 setLoading(false)
-                setError("Se ha perdido la conexion con el Servidor")
-                console.log(err)
+                setError("Try Again")
             })
-        }, 3000);
+            .catch(() => {
+                setLoading(false)
+                setError("Lost Connection with our Servers, try again.")
+            })
+        }, 1000);
     }
     return (
             <form 
@@ -63,8 +73,11 @@ export const Login = ({history}) => {
                                 <h3 className=" mb-4">RentalUrCar</h3>
                                 <h5 className=" mb-4">Login</h5>
                                 {error ?
-                                    <Errors error={error} /> 
-                                : null }
+                                <Message 
+                                    message={error} 
+                                    alertType="danger"
+                                /> 
+                            : null }
                                 <form>
                                     <div className="form-group">
                                         <label htmlFor="userName">User Name</label>
@@ -98,7 +111,7 @@ export const Login = ({history}) => {
                                     : 
                                     (
                                         <div>
-                                            <p className="text-secondary">Don't have an Account yet? <Link>Register</Link></p>
+                                            <p className="text-secondary">Don't have an Account yet? <Link to="/Auth/Register">Register</Link></p>
                                             <button 
                                                 className="mt-4 btn btn btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" 
                                                 type="submit"

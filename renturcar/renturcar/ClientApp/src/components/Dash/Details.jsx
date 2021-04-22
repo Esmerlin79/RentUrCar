@@ -1,10 +1,47 @@
-import React, {useContext} from 'react'
+import React, {useContext, useState} from 'react'
 import {RentalContext} from '../../context/RentalDetail'
+import {postData} from '../../Services/Maintenance'
+import {Message} from '../Message'
 
-export const Details = () => {
+export const Details = ({history}) => {
     const {car} = useContext(RentalContext)
+    // State to check if the Rent was successfully made to show a message
+    const [rentSuccess, setRentSuccess] = useState('')
+    const [rentError, setRentError] = useState('')
+
+    const goBack = () => {
+        history.push('/Dashboard')
+    }
+
+    const rentCar = async (id) => {
+        postData('endpoint', id)
+        .then(({data}) => {
+            if(data.successfull){
+                setRentSuccess('Car Successfully Rented')
+                return;
+            }
+            setRentError('Car was not rented successfully, try again')
+        })
+        .catch(() => {
+            setRentSuccess('Car not rented')
+            return
+        })
+    }
     return (
         <div className="container">
+
+            { rentSuccess ? ( 
+                <Message
+                    alertType="success" 
+                    message={rentSuccess} 
+                /> 
+            ): rentError ? (
+                <Message
+                    alertType="danger" 
+                    message={rentError} 
+                /> 
+            ) : null}
+
             <div className="row">
                     <div className="col-md-6">
                         <div className="card">
@@ -18,9 +55,11 @@ export const Details = () => {
                         <label><b>Price: </b>$2,000,000 US</label><br/>
                         
                         <button
+                            rentCar={rentCar}
                             className="btn btn-warning mr-2"
-                        >Buy</button>
+                        >Rent</button>
                         <button
+                            onClick={() => goBack()}
                             className="btn btn-secondary"
                         >Go back</button>
                 </div>

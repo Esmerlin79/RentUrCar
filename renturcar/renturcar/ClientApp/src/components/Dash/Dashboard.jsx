@@ -1,11 +1,32 @@
-import React, { Fragment } from 'react'
+import React, { useEffect,useState} from 'react'
 import {Card} from './Card'
-// import {BrowserRouter as Router, Route,Link} from 'react-router-dom'
+import {getAll} from '../../Services/Maintenance'
+import {Message} from '../Message'
 
-export const Dashboard = () => {
+export const Dashboard = ({history}) => {
+
+    const [error,setError] = useState('')
+    const [cars, getCars] = useState([])
+
+    const addCar = () => {
+        history.push('/Auth/AddCar')
+    }
+
+    useEffect(() => {
+        const getAllRents = async () => {
+            const res = await getAll();
+            if(res.data.successfull) {
+                return getCars(res.json())
+            }
+            return setError('Data Not Found')
+        }
+        getAllRents()
+    },[cars]);
+
     return (
-        <Fragment>
+        <>
             <main role="main">
+
             <section className="jumbotron text-center">
                 <div className="container">
                 <h1 className="jumbotron-heading">RentUrCar</h1>
@@ -13,13 +34,24 @@ export const Dashboard = () => {
                 </div>
             </section>
             </main>
+
             <div className="container">
-                <div className="col-md-12 d-flex justify-content-end">
-                    <button className="btn btn-success">Add a Car</button>
-                </div>
-                <Card />
+                {error ? 
+                    ( <Message alertType="danger" message={error} /> )
+                : (
+                    <>
+                        <div className="col-md-12 d-flex justify-content-end">
+                            <button 
+                                onClick={()=> addCar()}
+                                className="btn btn-success"
+                                >Add a Car</button>
+                        </div>
+                        <Card cars={cars}/>
+                    </>
+                )}
+                
             </div>
-        </Fragment>
+        </>
         
     )
 }

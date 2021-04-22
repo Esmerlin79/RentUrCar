@@ -1,6 +1,6 @@
 import React, {Fragment, useState} from 'react'
 import {postData} from '../../Services/Maintenance'
-import {Errors} from '../Errors'
+import {Message} from '../Message'
 import {Loading} from '../Loading'
 // import {BrowserRouter as Router, Route} from 'react-router-dom'
 // import {Link} from 'react-router-dom'
@@ -63,7 +63,10 @@ export const AddCar = () => {
                                 <div className="col-md-9 col-lg-8 mx-auto">
                                 <h3 className=" mb-4">Add a Car</h3>
                                 {error ?
-                                    <Errors error={error} /> 
+                                    <Message 
+                                        message={error} 
+                                        alertType="danger"
+                                    /> 
                                 : null }
                                 <form
                                     onSubmit = {onSubmit} 

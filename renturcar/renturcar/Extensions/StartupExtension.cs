@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Repository.DataContext;
+using Repository.Interface;
+using Repository.Repository;
+using Repository.Service;
 using RepositoryModel.Model;
 using System;
 using System.Collections.Generic;
@@ -15,7 +18,10 @@ namespace renturcar.Extensions
     {
         public static void ServicesImplementations(this IServiceCollection services)
         {
-           // For all Services
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
+            services.AddTransient<IUserService, UserService>();
+            services.AddScoped<IJwtGenerate, JwtGenerate>();
 
         }
         public static void IdentityConfigure(this IServiceCollection services)

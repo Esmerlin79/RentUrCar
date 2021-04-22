@@ -10,8 +10,8 @@ import axios from 'axios'
 //     return (await result).json()
 // }
 
-export const postData = async (url,data) => {
-    const result = await axios.post(url, data);
+export const postData = async (endpoint,data) => {
+    const result = await axios.post(`${API_URL}${endpoint}`,data);
     return (await result).json();
 }
 export const getAll = async (endpoint) => {
