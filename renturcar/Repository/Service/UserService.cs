@@ -18,19 +18,59 @@ namespace Repository.Service
         private readonly SignInManager<User> _signInManager;
         private readonly IJwtGenerate _jwtGenerate;
         private readonly IUnitOfWork<AppDbContext> _context;
-        //private readonly IUserSession _userSession;
-        public UserService(UserManager<User> userManager, SignInManager<User> signInManager, IJwtGenerate jwtGenerate, IUnitOfWork<AppDbContext> context)
+        private readonly IUserSession _userSession;
+        public UserService(UserManager<User> userManager, SignInManager<User> signInManager, IJwtGenerate jwtGenerate, IUnitOfWork<AppDbContext> context, IUserSession userSession)
         {
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
             _jwtGenerate = jwtGenerate;
-          //  _userSession = userSession;
+            _userSession = userSession;
         }
 
-        public Task<ServiceResult> Login(LoginViewModel model)
+        public async Task<ServiceResult> Login(LoginViewModel model)
         {
-            throw new NotImplementedException();
+            ServiceResult response = new ServiceResult();
+            response.Successfull = false;
+
+            var user = await _userManager.FindByNameAsync(model.UserName);
+            if (user == null)
+            {
+                response.Successfull = false;
+                response.Messages.Add("El usuario No existe");
+                return response;
+            }
+            var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
+            if (!result.Succeeded)
+            {
+                response.Successfull = false;
+                response.Messages.Add("El password es invalido vuelva a intentarlo");
+                return response;
+            }
+            try
+            {
+                var userView = new UserViewModel
+                {
+                    name = user.name,
+                    lastName = user.lastName,
+                    Token = _jwtGenerate.CreateToken(user),
+                    Username = user.UserName,
+                    Email = user.Email
+                };
+
+                response.Successfull = true;
+                response.Messages.Add("Registro Exitoso");
+                response.Data = userView;
+
+            }
+            catch (Exception ex)
+            {
+                response.Successfull = false;
+                response.LogError(ex);
+            }
+
+
+            return response;
         }
 
         public async Task<ServiceResult> RegisterUser(RegisterViewModel model)
@@ -96,9 +136,33 @@ namespace Repository.Service
             return response;
         }
 
-        public Task<ServiceResult> UserSesion()
+        public async Task<ServiceResult> UserSesion()
         {
-            throw new NotImplementedException();
+            var response = new ServiceResult();
+            response.Successfull = false;
+            try
+            {
+                var findUser = await _userManager.FindByNameAsync(_userSession.getUserSession());
+
+                var user = new UserViewModel
+                {
+                    name = findUser.name,
+                    lastName = findUser.lastName,
+                    Token = _jwtGenerate.CreateToken(findUser),
+                    Username = findUser.UserName,
+                    Email = findUser.Email
+                };
+                response.Successfull = true;
+                response.Data = user;
+                response.Messages.Add("Usuario Actual");
+            }
+            catch (Exception ex)
+            {
+                response.Successfull = false;
+                response.Messages.Add("Hubo un error al momento de buscar el usuario" + " " + ex);
+
+            }
+            return response;
         }
     }
 }
