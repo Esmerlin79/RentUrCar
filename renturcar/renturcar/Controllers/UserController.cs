@@ -35,5 +35,11 @@ namespace renturcar.Controllers
             var result = await _user.RegisterUser(model);
             return Ok(result);
         }
+        [HttpGet("[action]")]
+        public async Task<IActionResult> getCurrentUser()
+        {
+            var user = await _user.UserSesion();
+            return Ok(user);
+        }
     }
 }
