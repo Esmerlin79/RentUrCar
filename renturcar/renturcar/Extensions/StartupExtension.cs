@@ -21,9 +21,11 @@ namespace renturcar.Extensions
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IUserSession, UserSession>();
             services.AddScoped<IJwtGenerate, JwtGenerate>();
 
         }
+        
         public static void IdentityConfigure(this IServiceCollection services)
         {
             var builder = services.AddIdentityCore<User>();
