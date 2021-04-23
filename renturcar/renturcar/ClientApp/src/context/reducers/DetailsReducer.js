@@ -1,6 +1,5 @@
 export const initialState = {
-    cars: null,
-    authenticated: false
+    cars: null
 }
 
 const DetailsReducer = (state = initialState, action) =>{

@@ -12,3 +12,19 @@ export function AddCarAction(car){
     }
     return addCar(car);
 }
+
+export function getAllCarsAction(dispatch){
+    const getAllCars = async () => {
+        try {
+            const result = await HttpClient.get('/RentarCar/getAllCars');
+            dispatch({
+                type: "SHOW_DETAILS",
+                payload: result.data
+            })
+        } catch (error) {
+            console.log(error);
+            return error;
+        }
+    }
+    getAllCars();
+}

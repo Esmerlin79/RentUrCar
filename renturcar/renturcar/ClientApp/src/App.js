@@ -1,4 +1,4 @@
-import React, {useState, Fragment } from 'react';
+import React, {useState, Fragment, useEffect } from 'react';
 import {Header} from './components/Header'
 import {Register} from './components/Auth/Register'
 import {Login} from './components/Auth/Login'
@@ -9,7 +9,8 @@ import {AddCar} from './components/Dash/AddCar'
 import {RentalProvider} from './context/RentalDetail'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import SecurityRoute from './components/Auth/SecurityRoute'
-
+import { getCurrectUserAction } from './components/Actions/UserAction';
+import { useStateValue } from './context/store';
 
 /**
  * --- LOGIN: 
@@ -51,8 +52,24 @@ import SecurityRoute from './components/Auth/SecurityRoute'
  */
 
 function App() {
-    // const [log, setLog] = useState(false)
-    return (
+    const [{ userSesion }, dispatch] = useStateValue();
+
+    const [initApp, setInitApp] = useState(false);
+
+    useEffect(() => {
+        if(!initApp){
+            const token = window.localStorage.getItem("token");
+            if(token){
+                getCurrectUserAction(dispatch)
+                setInitApp(true)
+            }else{
+                setInitApp(true)
+            }
+
+        }
+    }, [initApp])
+
+    return userSesion === undefined ? null : (
 
             <Fragment>
                     <Header />

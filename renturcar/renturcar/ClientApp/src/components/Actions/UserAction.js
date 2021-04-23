@@ -63,3 +63,19 @@ export function RegisterAction(user, dispatch){
     }
     return registerUser(user);
 }
+export function getCurrectUserAction(dispatch){
+    const getUser = async () => {
+        try {
+            const result = await HttpClient.get('/User/getCurrentUser');
+            if(result.data.successfull){
+                dispatch({
+                    type: "OBTENER_USUARIO",
+                    payload: result.data.data.name + ' ' + result.data.data.lastName
+                })
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    getUser();
+}

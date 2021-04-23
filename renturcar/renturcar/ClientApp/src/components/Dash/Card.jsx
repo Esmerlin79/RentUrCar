@@ -6,11 +6,11 @@ export const Card = ({history,cars}) => {
     const [{ showDetails }, dispatch] = useStateValue();
 
     const rentDetail = () => {
-        dispatch({
-          type: 'SHOW_DETAILS',
-          payload: cars
-        })
-        history.push('/CarDetail')
+        // dispatch({
+        //   type: 'SHOW_DETAILS',
+        //   payload: cars
+        // })
+        // history.push('/CarDetail')
     }
 
     return (
@@ -45,12 +45,12 @@ export const Card = ({history,cars}) => {
                   <div className="card-body">
                     <div className="row m-auto">
                     <div className="col-md-6">
-                      <p className="card-title">% DESC PROD %</p>
-                      <p className="card-text">% PRICES %</p>
+                      <p className="card-title">{cars.brand}</p>
+                      <p className="card-text">{cars.model}</p>
                     </div>
                     <div className="col-md-6">
-                      <p className="card-title">% TIME %</p>
-                      <p className="card-text">% NEGOTIABLE %</p>
+                      <p className="card-title">{cars.pricePerDay}</p>
+                      {/* <p className="card-text">% NEGOTIABLE %</p> */}
                     </div>
                     </div>
                     <div className="d-flex mt-4 justify-content-center">

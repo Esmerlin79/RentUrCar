@@ -1,14 +1,17 @@
 import React from 'react'
-import Card from './Card'
+import {Card} from './Card'
 export const CarList = ({cars}) => {
     return (
         <div>
-            {cars.map(car => (
+            {cars !== null ? 
+            cars.map(car => (
                 <Card 
-                    key={car.id}
-                    cars={cars}
+                    key={car.brand}
+                    cars={car}
                 />
-            ))}
+            ))
+            : <p>No hay carros en alquiler</p>}
+
         </div>
     )
 }

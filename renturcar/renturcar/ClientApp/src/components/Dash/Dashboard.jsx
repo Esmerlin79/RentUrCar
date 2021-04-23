@@ -1,29 +1,27 @@
 import React, { useEffect,useState} from 'react'
-import {Card} from './Card'
 import {getAll} from '../../Services/Maintenance'
 import {Message} from '../Message'
+import { getAllCarsAction } from '../Actions/RentCarAction'
+import { useStateValue } from '../../context/store';
+import { CarList } from './CarList'
 
 export const Dashboard = ({history}) => {
 
+    const [{ showDetails }, dispatch] = useStateValue();
+
     const [error,setError] = useState('')
-    const [cars, getCars] = useState([])
+    const [cars, getCars] = useState(null)
 
     const addCar = () => {
         history.push('/Dashboard/AddCar')
     }
 
-    // useEffect(() => {
-    //     const getAllRents = async () => {
-    //         const res = await getAll();
-    //         if(res.data.successfull) {
-    //             return getCars(res.json())
-    //         }
-    //         return setError('Data Not Found')
-    //     }
-    //     getAllRents()
-    // },[cars]);
+    useEffect(() => {
+       getAllCarsAction(dispatch);
+        
+    },[]);
 
-    return (
+    return showDetails === null ? null :(
         <>
             <main role="main">
 
@@ -46,7 +44,7 @@ export const Dashboard = ({history}) => {
                                 className="btn btn-success"
                                 >Add a Car</button>
                         </div>
-                        <Card cars={cars}/>
+                        <CarList cars={showDetails.cars}/>
                     </>
                 )}
                 

@@ -7,6 +7,7 @@ export const initialState = {
 
 const UserReducer = (state = initialState, action) =>{
     switch (action.type) {
+        case "OBTENER_USUARIO":
         case "REGISTRAR_USUARIO":
         case "INICIAR_SESION": 
             return{
