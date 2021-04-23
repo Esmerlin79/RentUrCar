@@ -1,5 +1,6 @@
 export const initialState = {
-    cars: null
+    cars: null,
+    carSelected: null,
 }
 
 const DetailsReducer = (state = initialState, action) =>{
@@ -8,6 +9,11 @@ const DetailsReducer = (state = initialState, action) =>{
             return{
                 ...state,
                 cars: action.payload
+            }
+        case "CAR_DETAILS":
+            return{
+                ...state,
+                carSelected: action.payload 
             }
         default:
             return state;

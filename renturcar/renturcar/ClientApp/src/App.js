@@ -93,6 +93,12 @@ function App() {
                                 path = "/Dashboard/AddCar"
                                 component = {AddCar}
                             />
+
+                            <SecurityRoute 
+                                exact 
+                                path = "/carDetail"
+                                component = {Details}
+                            />
                         </Switch>
                     </Router>
                 <Footer />
