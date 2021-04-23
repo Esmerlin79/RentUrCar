@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-axios.defaults.baseURL = `${window.location.host}/api`;
+axios.defaults.baseURL = `https://${window.location.host}/api`;
 
 axios.interceptors.request.use(config => {
    config.headers.common["type"] = "Web";

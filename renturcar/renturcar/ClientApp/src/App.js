@@ -61,7 +61,7 @@ function App() {
             const response = async () =>{
                 const token = window.localStorage.getItem("token");
                 if(token){
-                const finished = await getCurrectUserAction(dispatch)
+                 const finished = await getCurrectUserAction(dispatch)
                  if(finished){
                     setInitApp(true)
                  }

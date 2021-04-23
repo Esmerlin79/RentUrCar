@@ -38,13 +38,17 @@ export const Dashboard = ({history}) => {
                     ( <Message alertType="danger" message={error} /> )
                 : (
                     <>
-                        <div className="col-md-12 d-flex justify-content-end">
+                        <div className="col-md-12 d-flex justify-content-end mb-5">
                             <button 
                                 onClick={()=> addCar()}
                                 className="btn btn-success"
                                 >Add a Car</button>
                         </div>
-                        <CarList cars={showDetails.cars}/>
+                       <div className="row mb-5">
+                           <div className="col-md-12">
+                              <CarList cars={showDetails.cars}/>
+                           </div>
+                       </div>
                     </>
                 )}
                 

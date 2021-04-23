@@ -41,6 +41,10 @@ export const AddCar = ({ history }) => {
         }
         history.push('/Dashboard');    
     }
+    const redirecDashboard = () => {
+        history.push('/Dashboard'); 
+    }
+
     return (
             <Fragment>
                 
@@ -117,7 +121,8 @@ export const AddCar = ({ history }) => {
                                             <div className="col-md-6">
                                                 <button 
                                                     className="mt-4 btn btn btn-secondary btn-block btn-login text-uppercase mb-2"
-                                                    type="submit"
+                                                    type="button"
+                                                    onClick={() => redirecDashboard()}
                                                 >Go Back
                                                 </button>
                                             </div>
