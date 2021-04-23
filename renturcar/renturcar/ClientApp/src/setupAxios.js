@@ -7,10 +7,10 @@ export const setupAxios = () => {
     (config) => {
         // if the request goes to the server send the user token
         if (config.url.includes(hostUrl)){
-            const userToken = localStorage.getItem("userToken");
+            const userToken = localStorage.getItem("token");
             
             if (userToken){
-                config.headers.Autorization = userToken;
+                config.headers.Autorization = 'Bearer '+userToken;
             }
 
             return config;

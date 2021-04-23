@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, Fragment } from 'react';
 import {Header} from './components/Header'
 import {Register} from './components/Auth/Register'
 import {Login} from './components/Auth/Login'
@@ -53,28 +53,30 @@ import SecurityRoute from './components/Auth/SecurityRoute'
 function App() {
     // const [log, setLog] = useState(false)
     return (
-        <RentalProvider>
-            <Header />
-                <Router>
-                    <Switch>
-                        <Route exact path="/Auth/Register" component={Register}/>
-                        <Route exact path="/Auth/Login" component={Login} />
-                        <Route exact path="/" component={Login} />
-                        <Route exact path="/Dashboard" component={Dashboard} />
-                        {/* <SecurityRoute 
-                            exact 
-                            path = "/Dashboard"
-                            component = {Dashboard}
-                        /> */}
-                        {/* <SecurityRoute 
-                            exact 
-                            path = "/Dashboard/AddCar"
-                            component = {AddCar}
-                        /> */}
-                    </Switch>
-                </Router>
-            <Footer />
-        </RentalProvider>  
+
+            <Fragment>
+                    <Header />
+                    <Router>
+                        <Switch>
+                            <Route exact path="/Auth/Register" component={Register}/>
+                            <Route exact path="/Auth/Login" component={Login} />
+                            <Route exact path="/" component={Login} />
+                            <Route exact path="/Dashboard" component={Dashboard} />
+                            {/* <SecurityRoute 
+                                exact 
+                                path = "/Dashboard"
+                                component = {Dashboard}
+                            /> */}
+                            {/* <SecurityRoute 
+                                exact 
+                                path = "/Dashboard/AddCar"
+                                component = {AddCar}
+                            /> */}
+                        </Switch>
+                    </Router>
+                <Footer />
+            </Fragment>
+
     )
 }
 export default App;

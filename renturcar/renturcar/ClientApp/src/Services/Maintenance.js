@@ -1,6 +1,4 @@
-import {API_URL} from './config'
-import axios from 'axios'
-
+import { setupAxios } from '../setupAxios';
 // export const postData = async (endpoint,data) => {
 //     const result = await fetch(`${API_URL}${endpoint}`, {
 //         method: 'POST',
@@ -11,14 +9,14 @@ import axios from 'axios'
 // }
 
 export const postData = async (endpoint,data) => {
-    const result = await axios.post(`${API_URL}${endpoint}`,data);
+    const result = await setupAxios.post(`${endpoint}`,data);
     return (await result).json();
 }
 export const getAll = async (endpoint) => {
-    const data = await axios(`${API_URL}${endpoint}`)
+    const data = await setupAxios(`${endpoint}`)
     return (await data).json()
 }
-export const getDetails = async (endpoint, id) => {
-    const data = await axios(`${API_URL}${endpoint}/${id}`)
-    return (await data).json()
-}
+// export const getDetails = async (endpoint, id) => {
+//     const data = await setupAxios(`${endpoint}/${id}`)
+//     return (await data).json()
+// }
