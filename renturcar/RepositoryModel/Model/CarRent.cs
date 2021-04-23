@@ -17,5 +17,7 @@ namespace RepositoryModel.Model
         public Car CarForRent { get; set; }
         public int CarForRentId { get; set; }
 
+        public bool Rented { get; set; } = false;
+
     }   
 }
