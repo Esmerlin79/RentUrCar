@@ -9,19 +9,19 @@ export const Dashboard = ({history}) => {
     const [cars, getCars] = useState([])
 
     const addCar = () => {
-        history.push('/Auth/AddCar')
+        history.push('/Dashboard/AddCar')
     }
 
-    useEffect(() => {
-        const getAllRents = async () => {
-            const res = await getAll();
-            if(res.data.successfull) {
-                return getCars(res.json())
-            }
-            return setError('Data Not Found')
-        }
-        getAllRents()
-    },[cars]);
+    // useEffect(() => {
+    //     const getAllRents = async () => {
+    //         const res = await getAll();
+    //         if(res.data.successfull) {
+    //             return getCars(res.json())
+    //         }
+    //         return setError('Data Not Found')
+    //     }
+    //     getAllRents()
+    // },[cars]);
 
     return (
         <>

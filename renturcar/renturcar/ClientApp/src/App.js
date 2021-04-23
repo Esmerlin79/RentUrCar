@@ -61,17 +61,17 @@ function App() {
                             <Route exact path="/Auth/Register" component={Register}/>
                             <Route exact path="/Auth/Login" component={Login} />
                             <Route exact path="/" component={Login} />
-                            <Route exact path="/Dashboard" component={Dashboard} />
-                            {/* <SecurityRoute 
+                            {/* <Route exact path="/Dashboard" component={Dashboard} /> */}
+                            <SecurityRoute 
                                 exact 
                                 path = "/Dashboard"
                                 component = {Dashboard}
-                            /> */}
-                            {/* <SecurityRoute 
+                            />
+                            <SecurityRoute 
                                 exact 
                                 path = "/Dashboard/AddCar"
                                 component = {AddCar}
-                            /> */}
+                            />
                         </Switch>
                     </Router>
                 <Footer />
