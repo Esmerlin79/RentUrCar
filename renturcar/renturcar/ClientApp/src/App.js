@@ -56,20 +56,24 @@ function App() {
 
     const [initApp, setInitApp] = useState(false);
 
-    useEffect(() => {
+    useEffect( () => {
         if(!initApp){
-            const token = window.localStorage.getItem("token");
-            if(token){
-                getCurrectUserAction(dispatch)
-                setInitApp(true)
-            }else{
-                setInitApp(true)
+            const response = async () =>{
+                const token = window.localStorage.getItem("token");
+                if(token){
+                const finished = await getCurrectUserAction(dispatch)
+                 if(finished){
+                    setInitApp(true)
+                 }
+                }else{
+                    setInitApp(true)
+                }
             }
-
+            response()
         }
     }, [initApp])
 
-    return userSesion === undefined ? null : (
+    return initApp === false ? null : (
 
             <Fragment>
                     <Header />

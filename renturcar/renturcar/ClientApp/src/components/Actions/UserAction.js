@@ -72,10 +72,13 @@ export function getCurrectUserAction(dispatch){
                     type: "OBTENER_USUARIO",
                     payload: result.data.data.name + ' ' + result.data.data.lastName
                 })
+                return true;
             }
+            return true;
         } catch (error) {
             console.log(error);
+            return true;
         }
     }
-    getUser();
+    return getUser();
 }
