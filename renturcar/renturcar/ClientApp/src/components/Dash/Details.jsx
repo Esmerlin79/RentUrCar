@@ -84,7 +84,11 @@ export const Details = ({history}) => {
             <div className="row ">
                     <div className="col-md-8">
                         <div className="card">
-                        <img src="https://images.pexels.com/photos/210019/pexels-photo-210019.jpeg?cs=srgb&dl=pexels-pixabay-210019.jpg&fm=jpg" alt=""/>
+                        {showDetails.carSelected.photo !== '' ? (
+                            <img className="card-img-top" src={`https://${window.location.host}/${showDetails.carSelected.photo}`} alt="Card image cap" />
+                        ): (
+                            <img className="card-img-top" src="https://images.pexels.com/photos/210019/pexels-photo-210019.jpeg?cs=srgb&dl=pexels-pixabay-210019.jpg&fm=jpg" alt="Card image cap" />
+                        )}
                         </div>
                     </div>
                     <div className="col-md-4">

@@ -13,6 +13,18 @@ export function AddCarAction(car){
     return addCar(car);
 }
 
+export function saveImageAction(img){
+    const saveImag = async data => {
+        try {
+            return await HttpClient.post('/RentarCar/UploadFile',data);
+        } catch (error) {
+            console.log(error);
+            return error;
+        }
+    }
+    return saveImag(img);
+}
+
 export function getAllCarsAction(dispatch){
     const getAllCars = async () => {
         try {

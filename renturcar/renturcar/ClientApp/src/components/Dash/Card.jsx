@@ -17,7 +17,11 @@ export const Card = ({ cars}) => {
         <>
                 <div className="col-md-6">
                 <div className="card mb-4 box-shadow">
-                  <img className="card-img-top" src="https://images.pexels.com/photos/210019/pexels-photo-210019.jpeg?cs=srgb&dl=pexels-pixabay-210019.jpg&fm=jpg" alt="Card image cap" />
+                  {cars.photo !== '' ? (
+                    <img className="card-img-top" src={`https://${window.location.host}/${cars.photo}`} alt="Card image cap" />
+                  ): (
+                    <img className="card-img-top" src="https://images.pexels.com/photos/210019/pexels-photo-210019.jpeg?cs=srgb&dl=pexels-pixabay-210019.jpg&fm=jpg" alt="Card image cap" />
+                  )}
                   <div className="card-body">
                     <div className="row m-auto">
                     <div className="col-md-12 text-center">

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Interface;
 using RepositoryModel.ViewModels;
@@ -31,6 +32,15 @@ namespace renturcar.Controllers
             var result = await _rentCar.saveCar(model);
             return Ok(result);
         }
+        [HttpPost]
+        [RequestSizeLimit(100000000)]
+        [Route("UploadFile")]
+        public async Task<IActionResult> UploadFile(IFormFile file)
+        {
+            var result = await _rentCar.saveImg(file);
+            return Ok(result);
+        }
+
         [HttpPost("[action]")]
         public IActionResult rentCar(CarViewModel model)
         {

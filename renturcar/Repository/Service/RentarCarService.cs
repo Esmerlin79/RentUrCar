@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Repository.DataContext;
 using Repository.Interface;
 using RepositoryModel;
@@ -6,6 +7,7 @@ using RepositoryModel.Model;
 using RepositoryModel.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,11 +52,44 @@ namespace Repository.Service
             }
         }
 
-        public async Task<ServiceResult> saveCar(CarViewModel model)
+        public async Task<ServiceResult> saveImg(IFormFile File)
         {
             var response = new ServiceResult();
             response.Successfull = false;
 
+            if (File == null || File.Length == 0)
+            {
+                response.Messages.Add("Seleccione una imagen");
+                return response;
+            }
+            try
+            {
+                string strFileExtension = System.IO.Path.GetExtension(File.FileName);
+
+                Guid guid = Guid.NewGuid();
+                var name = guid.ToString() + strFileExtension;
+                var path = Path.Combine(
+                            Directory.GetCurrentDirectory(), "wwwroot/imgCars",
+                            name);
+
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    await File.CopyToAsync(stream);
+                }
+                response.Successfull = true;
+                response.Data = "imgCars/" + name;
+                return response;
+            }
+            catch(Exception ex)
+            {
+                response.Messages.Add("Hubo un error");
+                return response;
+            }
+        }
+        public async Task<ServiceResult> saveCar(CarViewModel model)
+        {
+            var response = new ServiceResult();
+            response.Successfull = false;
             try
             {
                 var findUser = await _userManager.FindByNameAsync(_userSession.getUserSession());

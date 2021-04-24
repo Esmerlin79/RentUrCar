@@ -1,4 +1,5 @@
-﻿using RepositoryModel;
+﻿using Microsoft.AspNetCore.Http;
+using RepositoryModel;
 using RepositoryModel.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -13,5 +14,6 @@ namespace Repository.Interface
         IEnumerable<CarViewModel> GetAll();
         Task<ServiceResult> saveCar(CarViewModel model);
         ServiceResult rentCar(CarViewModel model);
+        Task<ServiceResult> saveImg(IFormFile File);
     }
 }

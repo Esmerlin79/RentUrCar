@@ -2,7 +2,8 @@ import React, {Fragment, useState} from 'react'
 import {postData} from '../../Services/Maintenance'
 import {Message} from '../Message'
 import {Loading} from '../Loading'
-import { AddCarAction } from '../Actions/RentCarAction';
+import { AddCarAction, saveImageAction } from '../Actions/RentCarAction';
+import {v4 as uuidv4} from 'uuid';
 // import {BrowserRouter as Router, Route} from 'react-router-dom'
 // import {Link} from 'react-router-dom'
 
@@ -14,19 +15,37 @@ export const AddCar = ({ history }) => {
         Brand: '',
         Model : '',
         PricePerDay: 0,
+        photo: '',
+        File: null,
         photo: ''
     })
-    const {Brand,Model,PricePerDay} = newCar
+    const {Brand,Model,PricePerDay, photo} = newCar
     const updateState = (e) => {
         setNewCar({
             ...newCar, 
             [e.target.name]: e.target.value
         })
     }
+    const uploadImage = e => {
+       const saveImage = async () =>{
+            const fileSelected= e.target.files[0];   
+             const frm= new FormData();
+    
+           frm.append('file',fileSelected);
+            if(frm !== null){
+                const img = await saveImageAction(frm);
+                setNewCar({
+                    ...newCar,
+                   photo: img.data.data
+                });
+            }
+       }
+       saveImage();
+    }
 
     const onSubmit = async (e) => {
         e.preventDefault()
-        if (Brand.trim() === '' || Model.trim() === '' || PricePerDay <= 0){
+        if (Brand.trim() === '' || Model.trim() === '' || PricePerDay <= 0 || photo === ''){
             setError("Revise los Campos Vacios");
             return;
           } 
@@ -104,9 +123,8 @@ export const AddCar = ({ history }) => {
                                         <label htmlFor="img">Picture</label>
                                         <input 
                                             type="file" 
-                                            name="img" 
                                             className="form-control"
-                                            onChange={updateState}
+                                            onChange={(e) => uploadImage(e) }
                                         />
                                     </div>
 
