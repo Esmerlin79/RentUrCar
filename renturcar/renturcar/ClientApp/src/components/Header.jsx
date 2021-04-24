@@ -1,6 +1,21 @@
 import React from 'react'
+import { useStateValue } from '../context/store';
+import { Link } from 'react-router-dom';
 
 export const Header = () => {
+
+    const [{ userSesion }, dispatch] = useStateValue();
+
+    const closeSession = () => {
+        localStorage.removeItem("token");
+        dispatch({
+            type: "SALIR_SESION"
+        })
+        dispatch({
+            type: "CLEAR_CARS"
+        })
+    }
+
     return (
         <div>
             <header>
@@ -31,9 +46,16 @@ export const Header = () => {
                     </svg>
                         <strong>RentUrCar</strong>
                     </a>
-                    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
+                    {/* <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon"></span>  
+                    </button> */}
+                    <Link 
+                        to="/" 
+                        className="text-light"
+                        onClick={() => closeSession()}
+                    >
+                        Logout
+                    </Link>
                     </div>
                 </div>
         </header>

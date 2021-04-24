@@ -15,6 +15,12 @@ const DetailsReducer = (state = initialState, action) =>{
                 ...state,
                 carSelected: action.payload 
             }
+        case "CLEAR_CARS": 
+            return{
+                ...state,
+                cars: null,
+                carSelected: null,
+            }
         default:
             return state;
     }

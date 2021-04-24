@@ -7,7 +7,7 @@ import { CarList } from './CarList'
 
 export const Dashboard = ({history}) => {
 
-    const [{ showDetails }, dispatch] = useStateValue();
+    const [{ showDetails, userSesion }, dispatch] = useStateValue();
 
     const [error,setError] = useState('')
     const [cars, getCars] = useState(null)
@@ -27,7 +27,7 @@ export const Dashboard = ({history}) => {
 
             <section className="jumbotron text-center">
                 <div className="container">
-                <h1 className="jumbotron-heading">RentUrCar</h1>
+                <h1 className="jumbotron-heading">Welcome to RentUrCar {userSesion.user}</h1>
                 <p className="lead text-muted">Where you can either sell or rent your car, we think in your earnings</p>
                 </div>
             </section>
