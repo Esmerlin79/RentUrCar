@@ -28,3 +28,16 @@ export function getAllCarsAction(dispatch){
     }
     getAllCars();
 }
+
+export function rentCarAction(car){
+    const rentCar = async (data) => {
+        try{
+            const result = await HttpClient.post('/RentarCar/rentCar', data);
+            return result;
+        }catch(error){
+            console.log(error);
+            return error;
+        }
+    }
+    return rentCar(car);
+}

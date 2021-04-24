@@ -15,6 +15,7 @@ namespace RepositoryModel.Model
         public User Owner {get; set;}   
         public string photo {get; set;}
         public int PricePerDay { get; set; }
-        
+        public int? status { get; set; }
+
     }
 }

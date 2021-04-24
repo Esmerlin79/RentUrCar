@@ -31,5 +31,11 @@ namespace renturcar.Controllers
             var result = await _rentCar.saveCar(model);
             return Ok(result);
         }
+        [HttpPost("[action]")]
+        public IActionResult rentCar(CarViewModel model)
+        {
+            var result =  _rentCar.rentCar(model);
+            return Ok(result);
+        }
     }
 }

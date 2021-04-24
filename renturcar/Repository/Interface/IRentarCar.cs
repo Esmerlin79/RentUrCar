@@ -12,5 +12,6 @@ namespace Repository.Interface
     {
         IEnumerable<CarViewModel> GetAll();
         Task<ServiceResult> saveCar(CarViewModel model);
+        ServiceResult rentCar(CarViewModel model);
     }
 }

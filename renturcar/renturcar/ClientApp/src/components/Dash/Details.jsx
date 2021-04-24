@@ -3,6 +3,9 @@ import {postData} from '../../Services/Maintenance'
 import {Message} from '../Message';
 import { useStateValue } from '../../context/store';
 import { Redirect } from 'react-router-dom';
+import { rentCarAction } from '../Actions/RentCarAction';
+import Swal from 'sweetalert2'
+
 export const Details = ({history}) => {
     // State to check if the Rent was successfully made to show a message
     const [rentSuccess, setRentSuccess] = useState('')
@@ -14,19 +17,53 @@ export const Details = ({history}) => {
         history.push('/Dashboard')
     }
 
-    const rentCar = async (id) => {
-        // postData('endpoint', id)
-        // .then(({data}) => {
-        //     if(data.successfull){
-        //         setRentSuccess('Car Successfully Rented')
-        //         return;
-        //     }
-        //     setRentError('Car was not rented successfully, try again')
-        // })
-        // .catch(() => {
-        //     setRentSuccess('Car not rented')
-        //     return
-        // })
+    const rentCar = () => {
+
+        if(showDetails.carSelected.status === 0){
+                Swal.fire({
+                    title: 'Are you sure you want to rent this car?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, rent the car!'
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        const car = showDetails.carSelected;
+        
+                        car.status = 1;      
+                        const response = await rentCarAction(car)
+        
+                    Swal.fire(
+                        'Rented!',
+                        'The car has been rented successfully',
+                        'success'
+                    );
+        
+                    if(response.data.successfull){
+                        history.push('/Dashboard')
+                    }
+                    }
+                })
+
+            }else{
+                const rentAgain = async () =>{
+                    const car = showDetails.carSelected;
+                    car.status = 0;   
+                    const response = await rentCarAction(car)
+                    Swal.fire(
+                        'Updated!',
+                        'The car is for rent again',
+                        'success'
+                    );
+                    if(response.data.successfull){
+                        history.push('/Dashboard')
+                    }
+                }
+                rentAgain();   
+            }
+        
     }
   
     return showDetails.carSelected === null ? <Redirect to="/Dashboard" /> : (
@@ -57,9 +94,9 @@ export const Details = ({history}) => {
                         {/* <label><b>Price: </b>$2,000,000 US</label><br/> */}
                         
                         <button
-                            rentCar={rentCar}
+                            onClick={rentCar}
                             className="btn btn-warning mr-2"
-                        >Rent</button>
+                        >{showDetails.carSelected.status === 0 ? 'Rent' : 'Enable Again'}</button>
                         <button
                             onClick={() => goBack()}
                             className="btn btn-secondary"

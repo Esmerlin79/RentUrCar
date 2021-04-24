@@ -20,13 +20,16 @@ export const Card = ({ cars}) => {
                   <img className="card-img-top" src="https://images.pexels.com/photos/210019/pexels-photo-210019.jpeg?cs=srgb&dl=pexels-pixabay-210019.jpg&fm=jpg" alt="Card image cap" />
                   <div className="card-body">
                     <div className="row m-auto">
-                    <div className="col-md-6">
-                      <p className="card-title">{cars.brand}</p>
-                      <p className="card-text">{cars.model}</p>
+                    <div className="col-md-12 text-center">
+                      {cars.status === 1 ? (
+                        <h2 className="card-title" style={{color:"red"}}>Rented</h2>
+                      ): null}
+                      <h2 className="card-title">{cars.brand + " "+ cars.model}</h2>
+                      
                     </div>
-                    <div className="col-md-6">
-                      <p className="card-title">{cars.pricePerDay}</p>
-                      {/* <p className="card-text">% NEGOTIABLE %</p> */}
+                    <div className="col-md-12 text-center">
+                      
+                    <p className="card-title">$ {cars.pricePerDay}</p>
                     </div>
                     </div>
                     <div className="d-flex mt-4 justify-content-center">

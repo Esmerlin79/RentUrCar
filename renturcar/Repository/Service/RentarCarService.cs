@@ -31,6 +31,25 @@ namespace Repository.Service
             return _context.GetAll<CarViewModel, Car>();
         }
 
+        public ServiceResult rentCar(CarViewModel model)
+        {
+            var response = new ServiceResult();
+            response.Successfull = false;
+
+            try
+            {
+               
+                response = _context.Update<CarViewModel, Car>(model);
+                response.Successfull = true;
+                return response;
+            }
+            catch(Exception ex)
+            {
+                response.Messages.Add("Hubo un error");
+                return response;
+            }
+        }
+
         public async Task<ServiceResult> saveCar(CarViewModel model)
         {
             var response = new ServiceResult();
