@@ -56,7 +56,7 @@ export const Login = ({history}) => {
                             >
                             <div className="row">
                                 <div className="col-md-9 col-lg-8 mx-auto">
-                                <h3 className=" mb-4">RentalUrCar</h3>
+                                <h3 className=" mb-4" data-cy="title">RentalUrCar</h3>
                                 <h5 className=" mb-4">Login</h5>
                                 {error ?
                                 <Message 
@@ -68,6 +68,7 @@ export const Login = ({history}) => {
                                     <div className="form-group">
                                         <label htmlFor="userName">User Name</label>
                                         <input 
+                                            data-cy="username"
                                             type="text" 
                                             id="userName" 
                                             className="form-control" 
@@ -80,6 +81,7 @@ export const Login = ({history}) => {
                                     <div className="form-group">
                                         <label htmlFor="inputPassword">Password</label>
                                         <input 
+                                            data-cy="password"
                                             type="password" 
                                             id="inputPassword" 
                                             className="form-control" 
@@ -97,9 +99,10 @@ export const Login = ({history}) => {
                                     : 
                                     (
                                         <div>
-                                            <p className="text-secondary">Don't have an Account yet? <Link to="/Auth/Register">Register</Link></p>
+                                            <p className="text-secondary">Don't have an Account yet? <Link data-cy="new-account" to="/Auth/Register">Register</Link></p>
                                             <button 
-                                                className="mt-4 btn btn btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" 
+                                                data-cy="btn-register"
+                                                className="mt-4  btn btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" 
                                                 type="submit"
                                             >Sign In</button>
                                         </div>

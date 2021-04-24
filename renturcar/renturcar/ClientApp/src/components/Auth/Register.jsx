@@ -63,7 +63,7 @@ export const Register = ({history}) => {
                         <div className="row">
                             
                             <div className="col-md-9 col-lg-8 mx-auto">
-                            <h3 className="mb-4">Welcome to RentUrCar!</h3>
+                            <h3 className="mb-4" data-cy="title">Welcome to RentUrCar!</h3>
                             <h5 className="mb-4">Register</h5>
                             {error ?
                                 <Message 
@@ -75,6 +75,7 @@ export const Register = ({history}) => {
                             <div className="form-group">
                                     <label for="name">Name</label>
                                     <input 
+                                        data-cy="name"
                                         type="text"  
                                         name="Nombre"
                                         value={Nombre}
@@ -85,6 +86,7 @@ export const Register = ({history}) => {
                                 <div className="form-group">
                                     <label for="lastName">Last Name</label>
                                     <input 
+                                        data-cy="last-name"
                                         type="text"
                                         name="Apellidos"
                                         value={Apellidos}
@@ -95,6 +97,7 @@ export const Register = ({history}) => {
                                 <div className="form-group">
                                     <label for="email">Email</label>
                                     <input 
+                                        data-cy="email"
                                         type="email" 
                                         name="Email"
                                         value={Email}
@@ -107,6 +110,7 @@ export const Register = ({history}) => {
                                 <div className="form-group">
                                     <label for="user">User Name</label>
                                     <input 
+                                        data-cy="username"
                                         type="text" 
                                         name="Username"
                                         value={Username}
@@ -117,6 +121,7 @@ export const Register = ({history}) => {
                                 <div className="form-group">
                                     <label for="inputPassword">Password</label>
                                     <input 
+                                        data-cy="password"
                                         type="password" 
                                         name="Password"
                                         value={Password}
@@ -133,8 +138,9 @@ export const Register = ({history}) => {
                                     : 
                                     (
                                         <div>
-                                            <p className="text-secondary">Already have an Account? <Link to="/Auth/Login">Login</Link></p>
+                                            <p className="text-secondary">Already have an Account? <Link data-cy="login" to="/Auth/Login">Login</Link></p>
                                             <button 
+                                                data-cy="btn-register"
                                                 className="mt-4 btn btn btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" 
                                                 type="submit"
                                             >Sign Up</button>

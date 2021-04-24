@@ -49,13 +49,19 @@ export const Header = () => {
                     {/* <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>  
                     </button> */}
-                    <Link 
-                        to="/" 
-                        className="text-light"
-                        onClick={() => closeSession()}
-                    >
-                        Logout
-                    </Link>
+                    {userSesion !== undefined ?(
+                        userSesion.authenticated ?(
+                            <Link 
+                                to="/" 
+                                className="text-light"
+                                onClick={() => closeSession()}
+                            >
+                                Logout
+                            </Link>
+                        ) : null
+                    )
+                    : null}
+                    
                     </div>
                 </div>
         </header>
