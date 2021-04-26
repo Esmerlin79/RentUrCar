@@ -8,8 +8,8 @@ import { mainReducer } from './context/reducers';
 import { initialState } from './context/initialState';
 import { StateProvider } from './context/store';
 
-const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
-const rootElement = document.getElementById('root');
+const baseUrl = document.getElementsByTagName("base")[0].getAttribute("href");
+const rootElement = document.getElementById("root");
 
 ReactDOM.render(
   <BrowserRouter basename={baseUrl}>
@@ -19,5 +19,6 @@ ReactDOM.render(
   </BrowserRouter>,
   rootElement);
 
-registerServiceWorker();
+ReactDOM.render(<AppRouter />, rootElement);
 
+registerServiceWorker();
