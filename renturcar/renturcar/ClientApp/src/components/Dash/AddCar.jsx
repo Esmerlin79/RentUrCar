@@ -2,53 +2,68 @@ import React, {Fragment, useState} from 'react'
 import {postData} from '../../Services/Maintenance'
 import {Message} from '../Message'
 import {Loading} from '../Loading'
+import { AddCarAction, saveImageAction } from '../Actions/RentCarAction';
+import {v4 as uuidv4} from 'uuid';
 // import {BrowserRouter as Router, Route} from 'react-router-dom'
 // import {Link} from 'react-router-dom'
 
-export const AddCar = () => {
+export const AddCar = ({ history }) => {
     // States
     const [error, setError ] = useState('')
     const [loading, setLoading] = useState(false)
     const [newCar, setNewCar] = useState({
-        carModel: 'Audi',
-        carYear : 1995,
-        price: 2000,
-        img: ''
+        Brand: '',
+        Model : '',
+        PricePerDay: 0,
+        photo: '',
+        File: null,
+        photo: ''
     })
-    const {carModel,carYear,price,img} = newCar
+    const {Brand,Model,PricePerDay, photo} = newCar
     const updateState = (e) => {
         setNewCar({
             ...newCar, 
             [e.target.name]: e.target.value
         })
-        console.log([e.target.name])
     }
-    const inpValidation = () => {
-        if (!carModel || !carYear) return setError("Revise los Campos Vacios")
-        else return setError(null)
+    const uploadImage = e => {
+       const saveImage = async () =>{
+            const fileSelected= e.target.files[0];   
+             const frm= new FormData();
+    
+           frm.append('file',fileSelected);
+            if(frm !== null){
+                const img = await saveImageAction(frm);
+                setNewCar({
+                    ...newCar,
+                   photo: img.data.data
+                });
+            }
+       }
+       saveImage();
     }
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault()
-        inpValidation()
-        
-        if(error) return;
+        if (Brand.trim() === '' || Model.trim() === '' || PricePerDay <= 0 || photo === ''){
+            setError("Revise los Campos Vacios");
+            return;
+          } 
         
         setLoading(true)
-
-        // Is just for simulation
-        setTimeout(() => {
-            postData('endpoint',newCar)
-            .then(data => {
-                console.log(data)
-            })
-            .catch(err => {
-                setLoading(false)
-                setError("Se ha perdido la conexion con el servidor")
-                console.log(err)
-            })
-        }, 4000);        
+        const response = await AddCarAction(newCar)
+        console.log(response)
+        if(!response.data.successfull){
+            setError("Hubo un error al agregar el carro")
+            setLoading(false);
+            return;
+        }
+        history.push('/Dashboard');    
     }
+    const redirecDashboard = () => {
+        history.push('/Dashboard'); 
+    }
+
     return (
             <Fragment>
                 
@@ -72,36 +87,34 @@ export const AddCar = () => {
                                     onSubmit = {onSubmit} 
                                 >
                                     <div className="form-group">
-                                        <label htmlFor="carModel">Car Model</label>
+                                        <label htmlFor="carModel">Car Brand</label>
                                         <input 
                                             type="text" 
-                                            id="carModel" 
                                             className="form-control" 
-                                            value={carModel}
-                                            name="carModel"
+                                            value={Brand}
+                                            name="Brand"
                                             onChange={ updateState }
                                         />
                                     </div>
 
                                     <div className="form-group">
-                                        <label htmlFor="carYear">Year Car</label>
+                                        <label htmlFor="carYear">Model</label>
                                         <input 
                                             type="text" 
-                                            id="carYear"
-                                            name="carYear" 
+                                            name="Model" 
                                             className="form-control"
-                                            value={carYear}
+                                            value={Model}
                                             onChange={updateState}
                                         />
                                     </div>
 
                                     <div className="form-group">
-                                        <label htmlFor="price">Price</label>
+                                        <label htmlFor="price">Price Per Day</label>
                                         <input 
                                             type="number" 
-                                            name="price" 
+                                            name="PricePerDay" 
                                             className="form-control"
-                                            value={price}
+                                            value={PricePerDay}
                                             onChange={updateState}
                                         />
                                     </div>
@@ -110,10 +123,8 @@ export const AddCar = () => {
                                         <label htmlFor="img">Picture</label>
                                         <input 
                                             type="file" 
-                                            name="img" 
                                             className="form-control"
-                                            value={img}
-                                            onChange={updateState}
+                                            onChange={(e) => uploadImage(e) }
                                         />
                                     </div>
 
@@ -128,7 +139,8 @@ export const AddCar = () => {
                                             <div className="col-md-6">
                                                 <button 
                                                     className="mt-4 btn btn btn-secondary btn-block btn-login text-uppercase mb-2"
-                                                    type="submit"
+                                                    type="button"
+                                                    onClick={() => redirecDashboard()}
                                                 >Go Back
                                                 </button>
                                             </div>

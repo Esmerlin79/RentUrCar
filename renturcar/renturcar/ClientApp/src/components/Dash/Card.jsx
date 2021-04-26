@@ -1,64 +1,48 @@
 import React from 'react'
 import { useStateValue } from '../../context/store';
+import { Link } from 'react-router-dom';
 
-export const Card = ({history,cars}) => {
+export const Card = ({ cars}) => {
 
     const [{ showDetails }, dispatch] = useStateValue();
 
-    const rentDetail = () => {
+    const rentDetail = (data) => {
         dispatch({
-          type: 'SHOW_DETAILS',
-          payload: cars
+          type: 'CAR_DETAILS',
+          payload: data
         })
-        history.push('/CarDetail')
     }
 
     return (
         <>
-          {/* {cars.map(car => {
-            <div className="col-md-4">
+                <div className="col-md-6">
                 <div className="card mb-4 box-shadow">
-                  <img className="card-img-top" src="https://images.pexels.com/photos/210019/pexels-photo-210019.jpeg?cs=srgb&dl=pexels-pixabay-210019.jpg&fm=jpg" alt="Card image cap" />
+                  {cars.photo !== '' ? (
+                    <img className="card-img-top" src={`https://${window.location.host}/${cars.photo}`} alt="Card image cap" />
+                  ): (
+                    <img className="card-img-top" src="https://images.pexels.com/photos/210019/pexels-photo-210019.jpeg?cs=srgb&dl=pexels-pixabay-210019.jpg&fm=jpg" alt="Card image cap" />
+                  )}
                   <div className="card-body">
                     <div className="row m-auto">
-                    <div className="col-md-6">
-                      <p className="card-title">% DESC PROD %</p>
-                      <p className="card-text">% PRICES %</p>
+                    <div className="col-md-12 text-center">
+                      {cars.status === 1 ? (
+                        <h2 className="card-title" style={{color:"red"}}>Rented</h2>
+                      ): null}
+                      <h2 className="card-title">{cars.brand + " "+ cars.model}</h2>
+                      
                     </div>
-                    <div className="col-md-6">
-                      <p className="card-title">% TIME %</p>
-                      <p className="card-text">% NEGOTIABLE %</p>
+                    <div className="col-md-12 text-center">
+                      
+                    <p className="card-title">$ {cars.pricePerDay}</p>
                     </div>
                     </div>
                     <div className="d-flex mt-4 justify-content-center">
-                    <button type="button" className="btn btn-primary">View</button>
-
-                    </div>
-                  </div>
-                </div>
-              </div>
-          })} */}
-
-            <div className="col-md-4">
-                <div className="card mb-4 box-shadow">
-                  <img className="card-img-top" src="https://images.pexels.com/photos/210019/pexels-photo-210019.jpeg?cs=srgb&dl=pexels-pixabay-210019.jpg&fm=jpg" alt="Card image cap" />
-                  <div className="card-body">
-                    <div className="row m-auto">
-                    <div className="col-md-6">
-                      <p className="card-title">% DESC PROD %</p>
-                      <p className="card-text">% PRICES %</p>
-                    </div>
-                    <div className="col-md-6">
-                      <p className="card-title">% TIME %</p>
-                      <p className="card-text">% NEGOTIABLE %</p>
-                    </div>
-                    </div>
-                    <div className="d-flex mt-4 justify-content-center">
-                    <button 
+                    <Link 
+                      to="/carDetail"
                       type="button" 
                       className="btn btn-primary"
                       onClick={() => rentDetail(cars)}
-                    >View</button>
+                    >View</Link>
 
                     </div>
                   </div>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, Fragment, useEffect } from 'react';
 import {Header} from './components/Header'
 import {Register} from './components/Auth/Register'
 import {Login} from './components/Auth/Login'
@@ -9,7 +9,8 @@ import {AddCar} from './components/Dash/AddCar'
 import {RentalProvider} from './context/RentalDetail'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import SecurityRoute from './components/Auth/SecurityRoute'
-
+import { getCurrectUserAction } from './components/Actions/UserAction';
+import { useStateValue } from './context/store';
 
 /**
  * --- LOGIN: 
@@ -51,30 +52,58 @@ import SecurityRoute from './components/Auth/SecurityRoute'
  */
 
 function App() {
-    // const [log, setLog] = useState(false)
-    return (
-        <RentalProvider>
-            <Header />
-                <Router>
-                    <Switch>
-                        <Route exact path="/Auth/Register" component={Register}/>
-                        <Route exact path="/Auth/Login" component={Login} />
-                        <Route exact path="/" component={Login} />
-                        <Route exact path="/Dashboard" component={Dashboard} />
-                        {/* <SecurityRoute 
-                            exact 
-                            path = "/Dashboard"
-                            component = {Dashboard}
-                        /> */}
-                        {/* <SecurityRoute 
-                            exact 
-                            path = "/Dashboard/AddCar"
-                            component = {AddCar}
-                        /> */}
-                    </Switch>
-                </Router>
-            <Footer />
-        </RentalProvider>  
+    const [{ userSesion }, dispatch] = useStateValue();
+
+    const [initApp, setInitApp] = useState(false);
+
+    useEffect( () => {
+        if(!initApp){
+            const response = async () =>{
+                const token = window.localStorage.getItem("token");
+                if(token){
+                 const finished = await getCurrectUserAction(dispatch)
+                 if(finished){
+                    setInitApp(true)
+                 }
+                }else{
+                    setInitApp(true)
+                }
+            }
+            response()
+        }
+    }, [initApp])
+
+    return initApp === false ? null : (
+
+            <Fragment>
+                    <Header />
+                    <Router>
+                        <Switch>
+                            <Route exact path="/Auth/Register" component={Register}/>
+                            <Route exact path="/Auth/Login" component={Login} />
+                            <Route exact path="/" component={Login} />
+                            {/* <Route exact path="/Dashboard" component={Dashboard} /> */}
+                            <SecurityRoute 
+                                exact 
+                                path = "/Dashboard"
+                                component = {Dashboard}
+                            />
+                            <SecurityRoute 
+                                exact 
+                                path = "/Dashboard/AddCar"
+                                component = {AddCar}
+                            />
+
+                            <SecurityRoute 
+                                exact 
+                                path = "/carDetail"
+                                component = {Details}
+                            />
+                        </Switch>
+                    </Router>
+                <Footer />
+            </Fragment>
+
     )
 }
 export default App;

@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using RepositoryModel.Model;
+using RepositoryModel.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,8 +14,8 @@ namespace RepositoryModel.MapperProfile
         private MapperHelper()
         {
             Mapper.Initialize(conf => {
-                
-
+                conf.CreateMap<CarViewModel, Car>();
+                conf.CreateMap<Car, CarViewModel>();
             });
 
         }
